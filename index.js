@@ -30,8 +30,18 @@ function getComments() {
 function parseLine(line){
     // [string] => [userInfo, Date, text, importance]
     const meta = line.split(';');
-    return [meta[0], new Date(meta[1]), meta[2], line.match(/!/g)];
+    
+    return [meta[0], new Date(meta[1]), meta[2], (line.match(/!/g) || []).length, meta.length != 1];
 }
+
+function formatTodo(todo){
+    if (todo[4]){
+        console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+        return
+    }
+    console.log(todo[0])
+        
+} 
 
 function processCommand(command) {
     const comments = getComments();
@@ -49,7 +59,7 @@ function processCommand(command) {
         case 'important':
             for (todo of predprocessed){
                 if (todo[3] !== null){
-                    console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+                    formatTodo(todo);
                 }
             }
             break;
@@ -57,7 +67,7 @@ function processCommand(command) {
             for (todo of predprocessed) {
                 if (todo[0] === commandData[1]) {
                     //console.log(todo)
-                    console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+                    formatTodo(todo);
                 }
             }
 
@@ -67,17 +77,17 @@ function processCommand(command) {
             }
             switch (commandData[1]){
                 case 'importance':
-                    predprocessed.sort((a, b) => b[3] >= a[3]);
+                    predprocessed.sort((a, b) => b[3] - a[3]);
                     break;
                 case 'date':
                     predprocessed.sort((a, b) => b[1] - a[1]);
                     break;
                 case 'user':
-                    predprocessed.sort((a, b) => a[0] < b[0]);
+                    predprocessed.sort((a, b) => a[0].localeCompare(b[0]));
                     break;
             }
             for (todo of predprocessed){
-                console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+                formatTodo(todo);
             }
             break;
             
