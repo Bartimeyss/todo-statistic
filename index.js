@@ -17,7 +17,7 @@ function getComments() {
     for (const file of files) {
         for (const line of file.split('\n')) {
             const idx = line.indexOf('// TODO ')
-            if (idx != -1 && line.indexOf('indexOf') == -1) {            
+            if (idx != -1 && line.indexOf('indexOf') == -1) {
                 //console.log(line)
                 result.push(line.slice(idx + 8));
             }
@@ -27,55 +27,56 @@ function getComments() {
     return result;
 }
 
-function parseLine(line){
+function parseLine(line) {
     // [string] => [userInfo, Date, text, importance]
     const meta = line.split(';');
-    
+
     return [meta[0], new Date(meta[1]), meta[2], (line.match(/!/g) || []).length, meta.length != 1];
 }
 
-function formatTodo(todo){
-    if (todo[4]){
+function formatTodo(todo) {
+    if (todo[4]) {
         console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
         return
     }
     console.log(todo[0])
-        
-} 
+
+}
 
 function processCommand(command) {
     const comments = getComments();
-    const predprocessed = comments.map(parseLine); 
+    const predprocessed = comments.map(parseLine);
     //console.log(predprocessed[0]);
 
     //getComments();
     const commandData = command.split(' ');
     switch (commandData[0]) {
         case 'show':
-            for (todo of comments){
+            for (todo of comments) {
                 console.log(todo);
             }
             break;
         case 'important':
-            for (todo of predprocessed){
-                if (todo[3] !== null){
+            for (todo of predprocessed) {
+                if (todo[3] !== null) {
                     formatTodo(todo);
                 }
             }
             break;
         case 'user':
             for (todo of predprocessed) {
-                if (todo[0] === commandData[1]) {
+                if (todo[0].toLowerCase() === commandData[1].toLowerCase()) {
                     //console.log(todo)
                     formatTodo(todo);
                 }
             }
+            break;
 
         case 'sort':
-            if (commandData.length === 1){
+            if (commandData.length === 1) {
                 break;
             }
-            switch (commandData[1]){
+            switch (commandData[1]) {
                 case 'importance':
                     predprocessed.sort((a, b) => b[3] - a[3]);
                     break;
@@ -86,11 +87,11 @@ function processCommand(command) {
                     predprocessed.sort((a, b) => a[0].localeCompare(b[0]));
                     break;
             }
-            for (todo of predprocessed){
+            for (todo of predprocessed) {
                 formatTodo(todo);
             }
             break;
-            
+
         case 'exit':
             process.exit(0);
             break;
@@ -100,7 +101,7 @@ function processCommand(command) {
     }
 }
 
-function formatDate (date) {
+function formatDate(date) {
     const d = date.getDate().toString().padStart(2, '0');
     const m = (date.getMonth() + 1).toString().padStart(2, '0');
     return `${d}-${m}-${date.getFullYear()}`
