@@ -45,12 +45,14 @@ function processCommand(command) {
             for (todo of comments){
                 console.log(todo);
             }
+            break;
         case 'important':
             for (todo of predprocessed){
                 if (todo[3] !== null){
                     console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
                 }
             }
+            break;
         case 'user':
             for (todo of predprocessed) {
                 if (todo[0] === commandData[1]) {
@@ -58,8 +60,27 @@ function processCommand(command) {
                     console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
                 }
             }
+
         case 'sort':
-            //predprocessed.sort((a, b) => b[3] >= a[3])
+            if (commandData.length === 1){
+                break;
+            }
+            switch (commandData[1]){
+                case 'importance':
+                    predprocessed.sort((a, b) => b[3] >= a[3]);
+                    break;
+                case 'date':
+                    predprocessed.sort((a, b) => b[1] - a[1]);
+                    break;
+                case 'user':
+                    predprocessed.sort((a, b) => a[0] < b[0]);
+                    break;
+            }
+            for (todo of predprocessed){
+                console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+            }
+            break;
+            
         case 'exit':
             process.exit(0);
             break;
