@@ -13,13 +13,14 @@ function getFiles() {
 
 function getComments() {
     let result = [];
+    const regex = /\/\/\s*todo[:]?\s*(.*)/i;
     let i = 0;
     for (const file of files) {
         for (const line of file.split('\n')) {
-            const idx = line.indexOf('// TODO ')
-            if (idx != -1 && line.indexOf('indexOf') == -1) {
+            const match = line.match(regex);
+            if (match && line.indexOf('indexOf') == -1) {
                 //console.log(line)
-                result.push(line.slice(idx + 8));
+                result.push(match[1]);
             }
         }
     }
