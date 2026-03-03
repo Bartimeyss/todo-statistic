@@ -39,7 +39,8 @@ function processCommand(command) {
     //console.log(predprocessed[0]);
 
     //getComments();
-    switch (command) {
+    const commandData = command.split(' ');
+    switch (commandData[0]) {
         case 'show':
             for (todo of comments){
                 console.log(todo);
@@ -47,11 +48,16 @@ function processCommand(command) {
         case 'important':
             for (todo of predprocessed){
                 if (todo[3] !== null){
-                    console.log(`${meta[0]}; ${formatDate(meta[1])}; ${meta[2]};`);
+                    console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
                 }
             }
         case 'user':
-            for (todo of)
+            for (todo of predprocessed) {
+                if (todo[0] === commandData[1]) {
+                    console.log(todo)
+                    console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
+                }
+            }
         case 'sort':
             //predprocessed.sort((a, b) => b[3] >= a[3])
         case 'exit':
