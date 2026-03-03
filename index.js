@@ -11,6 +11,19 @@ function getFiles() {
     return filePaths.map(path => readFile(path));
 }
 
+function getComments() {
+    let result = [];
+    for (const file of files) {
+        for (const line of file.lines) {
+            if (line.startsWith('// TODO ')) {
+                result.push(line);
+            }
+        }
+    }
+
+    return result;
+}
+
 function processCommand(command) {
     switch (command) {
         case 'exit':
