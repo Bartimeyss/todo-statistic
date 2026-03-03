@@ -91,7 +91,13 @@ function processCommand(command) {
                 formatTodo(todo);
             }
             break;
-
+        case 'date':
+            for (todo of predprocessed){
+                if (todo[1] - new Date(commandData) >= 0){
+                    formatTodo(todo);
+                }
+            }
+            break;
         case 'exit':
             process.exit(0);
             break;
