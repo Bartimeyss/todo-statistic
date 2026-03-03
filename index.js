@@ -26,6 +26,10 @@ function getComments() {
 
 function processCommand(command) {
     switch (command) {
+        case 'show':
+        case 'important':
+        case 'user':
+        
         case 'exit':
             process.exit(0);
             break;
