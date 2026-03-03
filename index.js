@@ -56,7 +56,7 @@ function processCommand(command) {
         case 'user':
             for (todo of predprocessed) {
                 if (todo[0] === commandData[1]) {
-                    console.log(todo)
+                    //console.log(todo)
                     console.log(`${todo[0]}; ${formatDate(todo[1])}; ${todo[2]};`);
                 }
             }
